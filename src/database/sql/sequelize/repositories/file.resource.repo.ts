@@ -1,15 +1,15 @@
 import { Op } from 'sequelize';
-import { ApiError } from '../../../../../common/api.error';
-import { Logger } from '../../../../../common/logger';
-import { IFileResourceRepo } from '../../../../repository.interfaces/general/file.resource.repo.interface';
-import { FileResourceUpdateModel, FileResourceUploadDomainModel } from '../../../../../domain.types/general/file.resource/file.resource.domain.model';
-import { FileResourceDetailsDto, FileResourceDto } from '../../../../../domain.types/general/file.resource/file.resource.dto';
-import { FileResourceSearchFilters, FileResourceSearchResults } from '../../../../../domain.types/general/file.resource/file.resource.search.types';
-import { FileResourceMetadata } from '../../../../../domain.types/general/file.resource/file.resource.types';
-import { FileResourceMapper } from '../../mappers/general/file.resource.mapper';
-import FileResource from '../../models/general/file.resource/file.resource.model';
-import FileResourceReference from '../../models/general/file.resource/file.resource.reference.model';
-import FileResourceVersion from '../../models/general/file.resource/file.resource.version.model';
+import { ApiError } from '../../../../common/api.error';
+import { Logger } from '../../../../common/logger';
+import { IFileResourceRepo } from '../../../repository.interfaces/file.resource.repo.interface';
+import { FileResourceUpdateModel, FileResourceUploadDomainModel } from '../../../../domain.types/file.resource/file.resource.domain.model';
+import { FileResourceDetailsDto, FileResourceDto } from '../../../../domain.types/file.resource/file.resource.dto';
+import { FileResourceSearchFilters, FileResourceSearchResults } from '../../../../domain.types/file.resource/file.resource.search.types';
+import { FileResourceMetadata } from '../../../../domain.types/file.resource/file.resource.types';
+import { FileResourceMapper } from '../mappers/file.resource.mapper';
+import FileResource from '../models/file.resource/file.resource.model';
+import FileResourceReference from '../models/file.resource/file.resource.reference.model';
+import FileResourceVersion from '../models/file.resource/file.resource.version.model';
 
 ///////////////////////////////////////////////////////////////////////
 

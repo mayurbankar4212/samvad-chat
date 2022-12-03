@@ -1,4 +1,4 @@
-import { uuid } from "../../miscellaneous/system.types";
+import { uuid } from "../miscellaneous/system.types";
 
 export interface ConversationDto {
     id?                  : uuid;

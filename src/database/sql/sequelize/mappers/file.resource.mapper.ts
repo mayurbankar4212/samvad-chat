@@ -1,10 +1,10 @@
-import FileResource from '../../models/general/file.resource/file.resource.model';
-import { FileResourceDetailsDto, FileResourceDto } from '../../../../../domain.types/general/file.resource/file.resource.dto';
-import FileResourceReference from '../../models/general/file.resource/file.resource.reference.model';
-import FileResourceVersion from '../../models/general/file.resource/file.resource.version.model';
-import { ResourceReference } from '../../../../../domain.types/general/file.resource/file.resource.types';
-import { FileResourceMetadata } from '../../../../../domain.types/general/file.resource/file.resource.types';
-import { ConfigurationManager } from '../../../../../config/configuration.manager';
+import FileResource from '../models/file.resource/file.resource.model';
+import { FileResourceDetailsDto, FileResourceDto } from '../../../../domain.types/file.resource/file.resource.dto';
+import FileResourceReference from '../models/file.resource/file.resource.reference.model';
+import FileResourceVersion from '../models/file.resource/file.resource.version.model';
+import { ResourceReference } from '../../../../domain.types/file.resource/file.resource.types';
+import { FileResourceMetadata } from '../../../../domain.types/file.resource/file.resource.types';
+import { ConfigurationManager } from '../../../../config/configuration.manager';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -22,8 +22,6 @@ export class FileResourceMapper {
             id               : fileResource.id,
             FileName         : fileResource.FileName,
             Url              : url,
-            OwnerUserId      : fileResource.OwnerUserId,
-            UploadedByUserId : fileResource.UploadedByUserId,
             IsPublicResource : fileResource.IsPublicResource,
             MimeType         : fileResource.MimeType,
             References       : [],
@@ -44,7 +42,6 @@ export class FileResourceMapper {
         const dto: FileResourceDto = {
             id               : fileResource.id,
             FileName         : fileResource.FileName,
-            OwnerUserId      : fileResource.OwnerUserId,
             IsPublicResource : fileResource.IsPublicResource,
             MimeType         : fileResource.MimeType,
             DefaultVersion   : fileResource.DefaultVersion ?

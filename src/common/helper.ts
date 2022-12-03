@@ -10,7 +10,6 @@ import { ConfigurationManager } from '../config/configuration.manager';
 import { Gender } from '../domain.types/miscellaneous/system.types';
 import { InputValidationError } from './input.validation.error';
 import { TimeHelper } from './time.helper';
-import Countries from './misc/countries';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -285,32 +284,6 @@ export class Helper {
         return password;
     }
 
-    static sanitizePhone(phone: string) {
-        if (!phone) {
-            return phone;
-        }
-        if (phone.includes('-')) {
-            const tokens = phone.split('-');
-            let countryCode = tokens[0];
-            let phoneNumber = tokens.length > 2 ? tokens.slice(1, ).join() : tokens[1];
-            countryCode = '+' + Helper.getDigitsOnly(countryCode);
-            phoneNumber = Helper.getDigitsOnly(phoneNumber);
-            return countryCode + '-' + phoneNumber;
-        }
-        else if (phone.startsWith('+')) {
-            var countryCodes = Countries.map(x => x.PhoneCode);
-            var countryCodesSorted = countryCodes.sort((a,b) => b.length - a.length);
-            for (var cc of countryCodesSorted) {
-                if (phone.startsWith(cc)) {
-                    var phoneNumber = phone.substring(cc.length);
-                    phoneNumber = Helper.getDigitsOnly(phoneNumber);
-                    return cc + '-' + phoneNumber;
-                }
-            }
-        }
-        return phone;
-    }
-
     static validatePhone(phone: string) {
         const tokens = phone.split('-');
         const countryCode = tokens[0];
@@ -379,49 +352,6 @@ export class Helper {
         let decrypted = decipher.update(encryptedText);
         decrypted = Buffer.concat([decrypted, decipher.final()]);
         return decrypted.toString();
-    };
-
-    public static getPossiblePhoneNumbers = (phone) => {
-
-        if (phone == null) {
-            return [];
-        }
-        
-        let phoneTemp = phone;
-        phoneTemp = phoneTemp.trim();
-        const countryCodes = Countries.map(x => x.PhoneCode);
-        const searchFors = countryCodes;
-        const possiblePhoneNumbers = [phone];
-
-        let phonePrefix = "";
-
-        for (var s of searchFors) {
-            if (phoneTemp.startsWith(s)) {
-                phonePrefix = s;
-                phoneTemp = phoneTemp.replace(s, '');
-                phoneTemp = phoneTemp.replace('-', '');
-            }
-        }
-    
-        if (phonePrefix) {
-            possiblePhoneNumbers.push(phonePrefix + phoneTemp);
-            possiblePhoneNumbers.push(phonePrefix + "-" + phoneTemp);
-            possiblePhoneNumbers.push(phoneTemp);
-    
-        } else {
-
-            var possibles = Countries.map(x => {
-                return x.PhoneCode + phoneTemp;
-            });
-            possiblePhoneNumbers.push(...possibles);
-            possibles = Countries.map(x => {
-                return x.PhoneCode + "-" + phoneTemp;
-            });
-            possiblePhoneNumbers.push(...possibles);
-
-            possiblePhoneNumbers.push(phoneTemp);
-        }
-        return possiblePhoneNumbers;
     };
 
     public static getFileExtension = (filename: string) => {

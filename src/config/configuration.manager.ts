@@ -1,21 +1,14 @@
 import path from 'path';
-import * as defaultConfiguration from '../../reancare.config.json';
-import * as localConfiguration from '../../reancare.config.local.json';
+import * as defaultConfiguration from '../../samvad_chat.config.json';
+import * as localConfiguration from '../../samvad_chat.config.local.json';
 import {
     AuthenticationType,
     AuthorizationType,
-    CareplanConfig,
     Configurations,
     DatabaseFlavour,
     DatabaseORM,
     DatabaseType,
-    EHRProvider,
-    EHRSpecification,
-    EmailServiceProvider,
-    FeatureFlagsProvider,
     FileStorageProvider,
-    InAppNotificationServiceProvider,
-    SMSServiceProvider
 } from './configuration.types';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,33 +33,17 @@ export class ConfigurationManager {
                 ORM     : configuration.Database.ORM as DatabaseORM,
                 Flavour : configuration.Database.Flavour as DatabaseFlavour,
             },
-            Ehr : {
-                Enabled       : configuration.Ehr.Enabled,
-                Specification : configuration.Ehr.Specification as EHRSpecification,
-                Provider      : configuration.Ehr.Provider as EHRProvider,
-            },
             FileStorage : {
                 Provider : configuration?.FileStorage?.Provider as FileStorageProvider ?? 'Custom',
             },
-            FeatureFlags : {
-                Provider : configuration?.FeatureFlags?.Provider as FeatureFlagsProvider ?? 'Custom',
-            },
-            Communication : {
-                SMSProvider               : configuration.Communication.SMS.Provider as SMSServiceProvider,
-                EmailProvider             : configuration.Communication.Email.Provider as EmailServiceProvider,
-                // eslint-disable-next-line max-len
-                InAppNotificationProvider : configuration.Communication.InAppNotifications.Provider as InAppNotificationServiceProvider,
-            },
-            Careplans        : configuration.Careplans,
             TemporaryFolders : {
                 Upload                     : configuration.TemporaryFolders.Upload as string,
                 Download                   : configuration.TemporaryFolders.Download as string,
                 CleanupFolderBeforeMinutes : configuration.TemporaryFolders.CleanupFolderBeforeMinutes as number,
             },
-            FormServiceProviders : configuration.FormServiceProviders,
-            MaxUploadFileSize    : configuration.MaxUploadFileSize,
-            JwtExpiresIn         : configuration.JwtExpiresIn,
-            SessionExpiresIn     : configuration.SessionExpiresIn,
+            MaxUploadFileSize : configuration.MaxUploadFileSize,
+            JwtExpiresIn      : configuration.JwtExpiresIn,
+            SessionExpiresIn  : configuration.SessionExpiresIn,
         };
 
         ConfigurationManager.checkConfigSanity();
@@ -100,18 +77,6 @@ export class ConfigurationManager {
         return ConfigurationManager._config.Database.Flavour;
     };
 
-    public static EhrEnabled = (): boolean => {
-        return ConfigurationManager._config.Ehr.Enabled;
-    };
-
-    public static EhrSpecification = (): EHRSpecification => {
-        return ConfigurationManager._config.Ehr.Specification;
-    };
-
-    public static EhrProvider = (): EHRProvider => {
-        return ConfigurationManager._config.Ehr.Provider;
-    };
-
     public static MaxUploadFileSize = (): number => {
         return ConfigurationManager._config.MaxUploadFileSize;
     };
@@ -122,18 +87,6 @@ export class ConfigurationManager {
 
     public static FileStorageProvider = (): FileStorageProvider => {
         return ConfigurationManager._config.FileStorage.Provider;
-    };
-
-    public static FeatureFlagsProvider = (): FeatureFlagsProvider => {
-        return ConfigurationManager._config.FeatureFlags.Provider;
-    };
-
-    public static SMSServiceProvider = (): SMSServiceProvider => {
-        return ConfigurationManager._config.Communication.SMSProvider;
-    };
-
-    public static EmailServiceProvider = (): EmailServiceProvider => {
-        return ConfigurationManager._config.Communication.EmailProvider;
     };
 
     public static UploadTemporaryFolder = (): string => {
@@ -148,19 +101,6 @@ export class ConfigurationManager {
 
     public static TemporaryFolderCleanupBefore = (): number => {
         return ConfigurationManager._config.TemporaryFolders.CleanupFolderBeforeMinutes;
-    };
-
-    public static InAppNotificationServiceProvider = (): InAppNotificationServiceProvider => {
-        return ConfigurationManager._config.Communication.InAppNotificationProvider;
-    };
-
-    public static careplans = ()
-        : { Enabled: boolean, Provider: string; Service: string; Plans: CareplanConfig[] } [] => {
-        return ConfigurationManager._config.Careplans;
-    };
-
-    public static formServiceProviders = (): { Provider: string; Code: string; } [] => {
-        return ConfigurationManager._config.FormServiceProviders;
     };
 
     public static SessionExpiresIn = (): number => {

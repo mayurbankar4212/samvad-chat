@@ -16,7 +16,6 @@ import {
 } from 'sequelize-typescript';
 
 import { v4 } from 'uuid';
-import User from '../../users/user/user.model';
 import FileResourceReference from './file.resource.reference.model';
 import FileResourceVersion from './file.resource.version.model';
 
@@ -28,7 +27,7 @@ import FileResourceVersion from './file.resource.version.model';
     tableName       : 'file_resources',
     paranoid        : true,
     freezeTableName : true,
-})
+    })
 export default class FileResource extends Model {
 
     @IsUUID(4)
@@ -50,7 +49,6 @@ export default class FileResource extends Model {
     FileName: string;
 
     @IsUUID(4)
-    @ForeignKey(() => User)
     @Column({
         type      : DataType.UUID,
         allowNull : true,
@@ -58,7 +56,6 @@ export default class FileResource extends Model {
     OwnerUserId: string;
 
     @IsUUID(4)
-    @ForeignKey(() => User)
     @Column({
         type      : DataType.UUID,
         allowNull : true,

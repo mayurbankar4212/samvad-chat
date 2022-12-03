@@ -1,5 +1,5 @@
-import { ApiClientDto, ClientApiKeyDto } from '../../../../../domain.types/api.client/api.client.dto';
-import ApiClient from '../../models/api.client/api.client.model';
+import { ApiClientDto, ClientApiKeyDto } from '../../../../domain.types/api.client/api.client.dto';
+import ApiClient from '../models/api.client/api.client.model';
 
 ///////////////////////////////////////////////////////////////////////////////////
 

@@ -1,7 +1,7 @@
-import { FileResourceMetadata } from "../../../domain.types/general/file.resource/file.resource.types";
-import { FileResourceUpdateModel, FileResourceUploadDomainModel } from "../../../domain.types/general/file.resource/file.resource.domain.model";
-import { FileResourceDetailsDto, FileResourceDto } from "../../../domain.types/general/file.resource/file.resource.dto";
-import { FileResourceSearchFilters, FileResourceSearchResults } from "../../../domain.types/general/file.resource/file.resource.search.types";
+import { FileResourceMetadata } from "../../domain.types/file.resource/file.resource.types";
+import { FileResourceUpdateModel, FileResourceUploadDomainModel } from "../../domain.types/file.resource/file.resource.domain.model";
+import { FileResourceDetailsDto, FileResourceDto } from "../../domain.types/file.resource/file.resource.dto";
+import { FileResourceSearchFilters, FileResourceSearchResults } from "../../domain.types/file.resource/file.resource.search.types";
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

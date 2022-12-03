@@ -1,9 +1,9 @@
 import express from 'express';
-import { ConversationDomainModel } from '../../../domain.types/general/chat/conversation.domain.model';
-import { ChatMessageDomainModel } from '../../../domain.types/general/chat/chat.message.domain.model';
-import { BaseValidator, Where } from '../../base.validator';
-import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { ConversationSearchFilters } from '../../../domain.types/general/chat/conversation.search.types';
+import { ConversationDomainModel } from '../../domain.types/chat/conversation.domain.model';
+import { ChatMessageDomainModel } from '../../domain.types/chat/chat.message.domain.model';
+import { BaseValidator, Where } from '../base.validator';
+import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { ConversationSearchFilters } from '../../domain.types/chat/conversation.search.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

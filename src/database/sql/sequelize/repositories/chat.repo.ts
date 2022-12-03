@@ -1,19 +1,17 @@
 import { Op } from 'sequelize';
-import { ChatMessageDomainModel } from '../../../../../domain.types/general/chat/chat.message.domain.model';
-import { ChatMessageDto } from '../../../../../domain.types/general/chat/chat.message.dto';
-import { ConversationDomainModel } from '../../../../../domain.types/general/chat/conversation.domain.model';
-import { ConversationDto } from '../../../../../domain.types/general/chat/conversation.dto';
-import { ConversationSearchFilters, ConversationSearchResults } from '../../../../../domain.types/general/chat/conversation.search.types';
-import { ApiError } from '../../../../../common/api.error';
-import { Logger } from '../../../../../common/logger';
-import { IChatRepo } from '../../../../repository.interfaces/general/chat.repo.interface';
-import Conversation from '../../models/general/chat/conversation.model';
-import ChatMessage from '../../models/general/chat/chat.message.model';
-import ConversationParticipant from '../../models/general/chat/conversation.participant.model';
-import { ChatMapper } from '../../mappers/general/chat.mapper';
-import { uuid } from '../../../../../domain.types/miscellaneous/system.types';
-import User from '../../models/users/user/user.model';
-import Person from '../../models/person/person.model';
+import { ChatMessageDomainModel } from '../../../../domain.types/chat/chat.message.domain.model';
+import { ChatMessageDto } from '../../../../domain.types/chat/chat.message.dto';
+import { ConversationDomainModel } from '../../../../domain.types/chat/conversation.domain.model';
+import { ConversationDto } from '../../../../domain.types/chat/conversation.dto';
+import { ConversationSearchFilters, ConversationSearchResults } from '../../../../domain.types/chat/conversation.search.types';
+import { ApiError } from '../../../../common/api.error';
+import { Logger } from '../../../../common/logger';
+import { IChatRepo } from '../../../repository.interfaces/chat.repo.interface';
+import Conversation from '../models/chat/conversation.model';
+import ChatMessage from '../models/chat/chat.message.model';
+import ConversationParticipant from '../models/chat/conversation.participant.model';
+import { ChatMapper } from '../mappers/chat.mapper';
+import { uuid } from '../../../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -40,7 +38,6 @@ export class ChatRepo implements IChatRepo {
                             },
                         ]
                     },
-                    include : this.includeUserDetails(),
                 });
                 if (existing) {
                     //Found, return the existing...
@@ -144,7 +141,6 @@ export class ChatRepo implements IChatRepo {
                     where : {
                         [Op.or] : conditions
                     },
-                    include : this.includeUserDetails(),
                 };
                 const { pageIndex, limit, order, orderByColum } = this.updateSearch(filters, search);
                 const foundResults = await Conversation.findAndCountAll(search);
@@ -205,7 +201,6 @@ export class ChatRepo implements IChatRepo {
                 where : {
                     id : conversationId
                 },
-                include : this.includeUserDetails(),
             });
             let userIds = [];
             if (conversation.IsGroupConversation) {
@@ -320,7 +315,6 @@ export class ChatRepo implements IChatRepo {
                         },
                     ]
                 },
-                include : this.includeUserDetails(),
             });
             if (existing) {
                 //Found, return the existing...
@@ -421,10 +415,9 @@ export class ChatRepo implements IChatRepo {
                         },
                     ]
                 },
-                include : this.includeUserDetails(),
-                order   : [['CreatedAt', 'DESC']],
-                limit   : 15,
-                offset  : 0,
+                order  : [['CreatedAt', 'DESC']],
+                limit  : 15,
+                offset : 0,
             });
             return conversations.map(x => ChatMapper.toDto(x));
         } catch (error) {
@@ -446,10 +439,9 @@ export class ChatRepo implements IChatRepo {
                         },
                     ]
                 },
-                include : this.includeUserDetails(),
-                order   : [['LastMessageTimestamp', 'DESC']],
-                limit   : 15,
-                offset  : 0,
+                order  : [['LastMessageTimestamp', 'DESC']],
+                limit  : 15,
+                offset : 0,
             });
             return conversations.map(x => ChatMapper.toDto(x));
         } catch (error) {
@@ -500,34 +492,6 @@ export class ChatRepo implements IChatRepo {
         return { pageIndex, limit, order, orderByColum };
     };
 
-    private includeUserDetails() {
-        return [
-            {
-                model    : User,
-                as       : 'OtherUser',
-                required : true,
-                include  : [
-                    {
-                        model    : Person,
-                        as       : 'Person',
-                        required : true
-                    }
-                ]
-            },
-            {
-                model    : User,
-                as       : 'InitiatingUser',
-                required : true,
-                include  : [
-                    {
-                        model    : Person,
-                        as       : 'Person',
-                        required : true
-                    }
-                ]
-            }
-        ];
-    }
     //#endregion
 
 }

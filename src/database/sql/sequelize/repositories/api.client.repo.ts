@@ -1,13 +1,13 @@
-import { IApiClientRepo } from '../../../../repository.interfaces/api.client/api.client.repo.interface';
-import ApiClient from '../../models/api.client/api.client.model';
+import { IApiClientRepo } from '../../../repository.interfaces/api.client/api.client.repo.interface';
+import ApiClient from '../models/api.client/api.client.model';
 import { Op } from 'sequelize';
-import { ApiClientDomainModel } from '../../../../../domain.types/api.client/api.client.domain.model';
-import { ClientMapper } from '../../mappers/api.client/client.mapper';
-import { Logger } from '../../../../../common/logger';
-import { ApiError } from '../../../../../common/api.error';
-import { CurrentClient } from '../../../../../domain.types/miscellaneous/current.client';
-import { ApiClientDto, ClientApiKeyDto } from '../../../../../domain.types/api.client/api.client.dto';
-import { ApiClientSearchFilters, ApiClientSearchResults } from '../../../../../domain.types/api.client/api.client.search.types';
+import { ApiClientDomainModel } from '../../../../domain.types/api.client/api.client.domain.model';
+import { ClientMapper } from '../mappers/client.mapper';
+import { Logger } from '../../../../common/logger';
+import { ApiError } from '../../../../common/api.error';
+import { CurrentClient } from '../../../../domain.types/miscellaneous/current.client';
+import { ApiClientDto, ClientApiKeyDto } from '../../../../domain.types/api.client/api.client.dto';
+import { ApiClientSearchFilters, ApiClientSearchResults } from '../../../../domain.types/api.client/api.client.search.types';
 
 ///////////////////////////////////////////////////////////////////////
 

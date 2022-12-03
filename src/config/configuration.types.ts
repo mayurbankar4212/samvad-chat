@@ -72,19 +72,9 @@ export interface Configurations {
     BaseUrl             : string;
     Auth                : AuthConfig;
     Database            : DatabaseConfig;
-    Ehr                 : EHRConfig;
     FileStorage         : FileStorageConfig;
-    FeatureFlags        : FeatureFlagsConfig;
-    Communication       : CommunicationConfig;
     TemporaryFolders    : TemporaryFoldersConfig;
-    Careplans           : {
-        Enabled : boolean;
-        Provider: string;
-        Service : string;
-        Plans   : CareplanConfig[]
-    } [];
     MaxUploadFileSize   : number;
     JwtExpiresIn        : number;
-    FormServiceProviders: FormServiceProvider[];
     SessionExpiresIn    : number;
 }

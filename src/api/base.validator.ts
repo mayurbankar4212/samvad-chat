@@ -212,7 +212,6 @@ export class BaseValidator {
         chain = chain.trim();
         chain = this.checkRequired(required, chain, nullable);
         chain = chain.notEmpty();
-        chain = chain.customSanitizer(Helper.sanitizePhone);
         chain = chain.custom(Helper.validatePhone);
 
         await chain.run(request);

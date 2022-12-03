@@ -2,7 +2,6 @@ import { BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey,
     IsUUID, Model, PrimaryKey, Table, UpdatedAt
 } from 'sequelize-typescript';
 import { v4 } from 'uuid';
-import User from '../../users/user/user.model';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -12,7 +11,7 @@ import User from '../../users/user/user.model';
     tableName       : 'chat_conversations',
     paranoid        : true,
     freezeTableName : true,
-})
+    })
 export default class Conversation extends Model {
 
     @IsUUID(4)
@@ -46,7 +45,6 @@ export default class Conversation extends Model {
     })
     Marked : boolean;
 
-    @ForeignKey(() => User)
     @Column({
         type : DataType.UUID,
 
@@ -54,19 +52,12 @@ export default class Conversation extends Model {
     })
     InitiatingUserId: string;
 
-    @BelongsTo(() => User, 'InitiatingUserId')
-    InitiatingUser: User;
-
-    @ForeignKey(() => User)
     @Column({
         type : DataType.UUID,
 
         allowNull : false,
     })
     OtherUserId: string;
-
-    @BelongsTo(() => User, 'OtherUserId')
-    OtherUser: User;
 
     @Column({
         type      : DataType.DATE,

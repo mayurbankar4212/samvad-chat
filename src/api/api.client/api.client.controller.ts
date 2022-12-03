@@ -1,9 +1,8 @@
 import express from 'express';
 
-import { ApiClientService } from '../../services/api.client/api.client.service';
+import { ApiClientService } from '../../services/api.client.service';
 import { ResponseHandler } from '../../common/response.handler';
 import { Loader } from '../../startup/loader';
-import { Authorizer } from '../../auth/authorizer';
 import { ApiClientValidator } from './api.client.validator';
 import { ApiError } from '../../common/api.error';
 
@@ -15,11 +14,8 @@ export class ApiClientController {
 
     _service: ApiClientService = null;
 
-    _authorizer: Authorizer = null;
-
     constructor() {
         this._service = Loader.container.resolve(ApiClientService);
-        this._authorizer = Loader.authorizer;
     }
 
     //#endregion
@@ -27,7 +23,6 @@ export class ApiClientController {
     create = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'Client.Create';
-            await this._authorizer.authorize(request, response);
 
             const clientDomainModel = await ApiClientValidator.create(request);
 
@@ -46,7 +41,6 @@ export class ApiClientController {
     getById = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'Client.GetById';
-            await this._authorizer.authorize(request, response);
 
             const id: string = await ApiClientValidator.getById(request);
 
@@ -65,7 +59,6 @@ export class ApiClientController {
     search = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'Client.Search';
-            await this._authorizer.authorize(request, response);
 
             const filters = await ApiClientValidator.search(request);
 
@@ -86,7 +79,6 @@ export class ApiClientController {
     update = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'Client.Update';
-            await this._authorizer.authorize(request, response);
 
             const id: string = await ApiClientValidator.getById(request);
             const domainModel = await ApiClientValidator.update(request);
@@ -105,7 +97,6 @@ export class ApiClientController {
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'Client.Delete';
-            await this._authorizer.authorize(request, response);
 
             const id: string = await ApiClientValidator.getById(request);
             await this._service.delete(id);
