@@ -65,11 +65,11 @@ export class ChatValidator extends BaseValidator {
     };
 
     getCreateMessageDomainModel =
-        (requestBody: any, currentUserId: uuid, conversationId: uuid): ChatMessageDomainModel => {
+        (requestBody: any, conversationId: uuid): ChatMessageDomainModel => {
 
             const createModel: ChatMessageDomainModel = {
                 ConversationId : conversationId,
-                SenderId       : requestBody.SenderId ?? currentUserId,
+                SenderId       : requestBody.SenderId,
                 Message        : requestBody.Message ?? null,
             };
 
@@ -86,7 +86,7 @@ export class ChatValidator extends BaseValidator {
     };
 
     private async validateMessageCreateBody(request) {
-        await this.validateUuid(request, 'SenderId', Where.Body, false, false);
+        await this.validateUuid(request, 'SenderId', Where.Body, true, false);
         await this.validateString(request, 'Message', Where.Body, true, false);
         await this.validateRequest(request);
     }
@@ -99,7 +99,7 @@ export class ChatValidator extends BaseValidator {
     sendMessage = async (request: express.Request): Promise<ChatMessageDomainModel> => {
         await this.validateMessageCreateBody(request);
         return this.getCreateMessageDomainModel(
-            request.body, request.currentUser.UserId, request.params.conversationId);
+            request.body, request.params.conversationId);
     };
 
     updateMessage = async (request: express.Request): Promise<ChatMessageDomainModel> => {
