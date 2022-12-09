@@ -13,13 +13,13 @@ export class ChatValidator extends BaseValidator {
         super();
     }
 
-    getCreateConversationDomainModel = (requestBody: any, currentUserId: uuid): ConversationDomainModel => {
+    getCreateConversationDomainModel = (requestBody: any): ConversationDomainModel => {
 
         const createModel: ConversationDomainModel = {
             IsGroupConversation : requestBody.IsGroupConversation ?? false,
             Topic               : requestBody.Topic ?? null,
             Marked              : requestBody.Marked ?? false,
-            InitiatingUserId    : currentUserId,
+            InitiatingUserId    : requestBody.InitiatingUserId,
             OtherUserId         : requestBody.OtherUserId ?? null,
             Users               : requestBody.Users ?? null,
         };
@@ -54,7 +54,7 @@ export class ChatValidator extends BaseValidator {
 
     startConversation = async (request: express.Request): Promise<ConversationDomainModel> => {
         await this.validateConversationCreateBody(request);
-        return this.getCreateConversationDomainModel(request.body, request.currentUser.UserId);
+        return this.getCreateConversationDomainModel(request.body);
     };
 
     updateConversation = async (request: express.Request): Promise<ConversationDomainModel> => {
