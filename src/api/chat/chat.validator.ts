@@ -20,7 +20,7 @@ export class ChatValidator extends BaseValidator {
             Topic               : requestBody.Topic ?? null,
             Marked              : requestBody.Marked ?? false,
             InitiatingUserId    : requestBody.InitiatingUserId,
-            OtherUserId         : requestBody.OtherUserId ?? null,
+            OtherUserId         : requestBody.OtherUserId,
             Users               : requestBody.Users ?? null,
         };
 
