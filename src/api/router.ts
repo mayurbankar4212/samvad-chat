@@ -21,7 +21,7 @@ export class Router {
                 //Handling the base route
                 this._app.get('/api/v1/', (req, res) => {
                     res.send({
-                        message : `REANCare API [Version ${process.env.API_VERSION}]`,
+                        message : `Samvad Chat API [Version ${process.env.API_VERSION}]`,
                     });
                 });
 
