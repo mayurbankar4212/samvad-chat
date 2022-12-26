@@ -1,0 +1,25 @@
+{
+    "StartConversation":{
+        "InitiatingUserId": "fcd89488-0a30-4c15-8b49-cf2e3f6e9f68",
+        "OtherUserId": "091d3464-b361-4a85-9e78-1f8765a994a8"
+    },
+
+    "FirstUserSendsMessage":{
+        "SenderId": "fcd89488-0a30-4c15-8b49-cf2e3f6e9f68",
+        "Message": "Football today?"
+    },
+
+    "SecondUserSendsMessage":{
+        "SenderId": "091d3464-b361-4a85-9e78-1f8765a994a8",
+        "Message": "काय करता आपण या क्षणाला?"
+    },
+
+    "UpdateConversationById":{
+        "Topic":"Education",
+        "Marked": "true"
+    },
+
+    "UpdateMessageById":{
+        "Message": "Let's roll!"
+    }
+}

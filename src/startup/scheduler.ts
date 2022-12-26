@@ -17,7 +17,7 @@ export class Scheduler {
     private constructor() {
         const env = process.env.NODE_ENV || 'development';
         Scheduler._schedules = CronSchedules[env];
-        Logger.instance().log('Initializing the schedular.');
+        Logger.instance().log('Initializing the scheduler.');
     }
 
     //#endregion

@@ -90,7 +90,6 @@ export class CustomFileStorageService implements IFileStorageService {
         }
     };
     
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getShareableLink(storageKey: string, _durationInMinutes: number): string {
         return path.join(this._storagePath, storageKey);
     }

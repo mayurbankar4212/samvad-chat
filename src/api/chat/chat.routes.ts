@@ -17,8 +17,8 @@ export const register = (app: express.Application): void => {
     router.get('/conversations/first-user/:firstUserId/second-user/:secondUserId', authenticator.authenticateClient, controller.getConversationBetweenTwoUsers);
     router.get('/users/:userId/conversations/marked', authenticator.authenticateClient, controller.getMarkedConversationsForUser);
     router.get('/users/:userId/conversations/recent', authenticator.authenticateClient, controller.getRecentConversationsForUser);
-    router.get('/conversations/:conversationId/messages', authenticator.authenticateClient, controller.getConversationMessages);
     router.get('/users/:userId/conversations/search', authenticator.authenticateClient, controller.searchUserConversations);
+    router.get('/conversations/:conversationId/messages', authenticator.authenticateClient, controller.getConversationMessages);
     router.get('/conversations/:conversationId', authenticator.authenticateClient, controller.getConversationById);
     router.put('/conversations/:conversationId', authenticator.authenticateClient, controller.updateConversation);
     router.delete('/conversations/:conversationId', authenticator.authenticateClient, controller.deleteConversation);

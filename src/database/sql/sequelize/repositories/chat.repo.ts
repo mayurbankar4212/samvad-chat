@@ -56,7 +56,6 @@ export class ChatRepo implements IChatRepo {
             if (model.IsGroupConversation && model.Users.length > 0) {
                 participants = [];
                 for await (var userId of model.Users) {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const participant = await ConversationParticipant.create({
                         ConversationId : conversation.id,
                         UserId         : userId,
