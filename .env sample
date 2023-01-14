@@ -13,10 +13,10 @@ CIPHER_SALT=<cipher-salt-for-encoding-and-decoding> #for example $2a$08$xJyi78a2
 
 #Database connection details
 
-DB_USER_NAME=<your-database-user-name>
-DB_USER_PASSWORD=<your-database-user-password>
+DB_USER_NAME=root
+DB_USER_PASSWORD=root
 DB_NAME=reancare
-DB_HOST=<your-database-host-name>
+DB_HOST=127.0.0.1
 
 ##########################################################
 

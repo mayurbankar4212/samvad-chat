@@ -1,40 +1,40 @@
-import { ConversationDomainModel } from "../../domain.types/chat/conversation.domain.model";
-import { ConversationDto } from "../../domain.types/chat/conversation.dto";
-import { ChatMessageDomainModel } from "../../domain.types/chat/chat.message.domain.model";
-import { ChatMessageDto } from "../../domain.types/chat/chat.message.dto";
-import { ConversationSearchFilters, ConversationSearchResults } from "../../domain.types/chat/conversation.search.types";
-import { uuid } from "../../domain.types/miscellaneous/system.types";
+// import { ConversationDomainModel } from "../../domain.types/chat/conversation.domain.model";
+// import { ConversationDto } from "../../domain.types/chat/conversation.dto";
+// import { ChatMessageDomainModel } from "../../domain.types/chat/chat.message.domain.model";
+// import { ChatMessageDto } from "../../domain.types/chat/chat.message.dto";
+// import { ConversationSearchFilters, ConversationSearchResults } from "../../domain.types/chat/conversation.search.types";
+// import { uuid } from "../../domain.types/miscellaneous/system.types";
 
-export interface IChatRepo {
+// export interface IChatRepo {
 
-    startConversation(model: ConversationDomainModel): Promise<ConversationDto>;
+//     startConversation(model: ConversationDomainModel): Promise<ConversationDto>;
 
-    sendMessage(model: ChatMessageDomainModel): Promise<ChatMessageDto>;
+//     // sendMessage(model: ChatMessageDomainModel): Promise<ChatMessageDto>;
 
-    getConversationMessages(conversationId: uuid): Promise<ChatMessageDto[]>;
+//     // getConversationMessages(conversationId: uuid): Promise<ChatMessageDto[]>;
 
-    searchUserConversations(filters: ConversationSearchFilters): Promise<ConversationSearchResults>;
+//     // searchUserConversations(filters: ConversationSearchFilters): Promise<ConversationSearchResults>;
 
-    getConversationById(conversationId: uuid): Promise<ConversationDto>;
+//     // getConversationById(conversationId: uuid): Promise<ConversationDto>;
 
-    updateConversation(conversationId: uuid, updates: ConversationDomainModel): Promise<ConversationDto>;
+//     // updateConversation(conversationId: uuid, updates: ConversationDomainModel): Promise<ConversationDto>;
 
-    deleteConversation(conversationId: uuid): Promise<boolean>;
+//     // deleteConversation(conversationId: uuid): Promise<boolean>;
 
-    addUserToConversation(conversationId: uuid, userId: uuid): Promise<boolean>;
+//     // addUserToConversation(conversationId: uuid, userId: uuid): Promise<boolean>;
 
-    removeUserFromConversation(conversationId: uuid, userId: uuid): Promise<boolean>;
+//     // removeUserFromConversation(conversationId: uuid, userId: uuid): Promise<boolean>;
 
-    getConversationBetweenTwoUsers(firstUserId: uuid, secondUserId: uuid): Promise<ConversationDto>;
+//     // getConversationBetweenTwoUsers(firstUserId: uuid, secondUserId: uuid): Promise<ConversationDto>;
 
-    getMessage(messageId: uuid): Promise<ChatMessageDto>;
+//     // getMessage(messageId: uuid): Promise<ChatMessageDto>;
 
-    updateMessage(messageId: uuid, updates: ChatMessageDomainModel): Promise<ChatMessageDto>;
+//     // updateMessage(messageId: uuid, updates: ChatMessageDomainModel): Promise<ChatMessageDto>;
 
-    deleteMessage(messageId: uuid): Promise<boolean>;
+//     // deleteMessage(messageId: uuid): Promise<boolean>;
 
-    getMarkedConversationsForUser(userId: uuid): Promise<ConversationDto[]>;
+//     // getMarkedConversationsForUser(userId: uuid): Promise<ConversationDto[]>;
 
-    getRecentConversationsForUser(userId: uuid): Promise<ConversationDto[]>;
+//     // getRecentConversationsForUser(userId: uuid): Promise<ConversationDto[]>;
 
-}
+// }

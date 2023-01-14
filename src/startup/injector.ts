@@ -4,6 +4,7 @@ import { DependencyContainer } from 'tsyringe';
 import { DatabaseInjector } from "../database/database.injector";
 import { ModuleInjector } from '../modules/module.injector';
 import { AuthInjector } from '../auth/auth.injector';
+import { ChatInjector } from '../api/chat.injector';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,6 +20,9 @@ export class Injector {
 
         //Modules
         ModuleInjector.registerInjections(container);
+
+        //Chat
+        ChatInjector.registerInjections(container);
 
     }
 

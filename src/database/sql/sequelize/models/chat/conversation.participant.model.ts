@@ -2,9 +2,16 @@ import { BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey,
     IsUUID, Model, PrimaryKey, Table, UpdatedAt
 } from 'sequelize-typescript';
 import { v4 } from 'uuid';
-import Conversation from './conversation.model';
+import User from './chat.user';
+import Conversation from './blocked.user..model';
+import GroupConversation from './group.conversation.model';
+import PeerConversation from './peer.conversation.model';
 
 ///////////////////////////////////////////////////////////////////////
+enum ConversationType {
+    GROUP = "GROUP",
+    PEER = "PEER",
+  }
 
 @Table({
     timestamps      : true,
@@ -26,24 +33,63 @@ export default class ConversationParticipant extends Model {
     })
     id: string;
 
+    // @IsUUID(4)
+    // @ForeignKey(() => Conversation)
+    // @Column({
+    //     type      : DataType.UUID,
+    //     allowNull : true,
+    // })
+    // ConversationId : string;
+
+    // @BelongsTo(() =>  Conversation)
+    // Conversation:  Conversation;
+    
     @IsUUID(4)
-    @ForeignKey(() => Conversation)
+    @ForeignKey(() => User)
+    @Column({
+        type      : DataType.UUID,
+        allowNull : false,
+    })
+    UserId : string;
+
+    @BelongsTo(() =>  User)
+    user:  User;
+
+    @Column({
+        type :  DataType.ENUM(...Object.values(ConversationType)),
+        allowNull : false,
+    })
+    ConversationType: ConversationType;
+
+    @Column({
+        type :DataType.BOOLEAN,
+        allowNull : false,
+        defaultValue : false,
+    })
+    IsAdmin: boolean;
+
+    @IsUUID(4)
+    @ForeignKey(() => PeerConversation)
     @Column({
         type      : DataType.UUID,
         allowNull : true,
     })
-    ConversationId : string;
+    PeerConversationId : string;
 
-    @BelongsTo(() =>  Conversation)
-    Conversation:  Conversation;
-    
+    @BelongsTo(() =>  PeerConversation)
+    OneToOneConversation:  PeerConversation;
+
+    @IsUUID(4)
+    @ForeignKey(() => GroupConversation)
     @Column({
-        type : DataType.UUID,
-
-        allowNull : false,
+        type      : DataType.UUID,
+        allowNull : true,
     })
-    UserId: string;
+    GroupConversationId : string;
 
+    @BelongsTo(() =>  GroupConversation)
+    OneToManyConversation:  GroupConversation;
+    
     @Column
     @CreatedAt
     CreatedAt: Date;

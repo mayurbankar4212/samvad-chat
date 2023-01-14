@@ -1,18 +1,21 @@
 import { BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey,
-    IsUUID, Model, PrimaryKey, Table, UpdatedAt
+    IsUUID, Model, PrimaryKey, Table, UpdatedAt,HasMany
 } from 'sequelize-typescript';
 import { v4 } from 'uuid';
+import BlockedUser from './blocked.user..model';
+import User from './chat.user';
+import ConversationParticipant from './conversation.participant.model';
 
 ///////////////////////////////////////////////////////////////////////
 
 @Table({
     timestamps      : true,
-    modelName       : 'Conversation',
-    tableName       : 'chat_conversations',
+    modelName       : 'PeerConversation',
+    tableName       : 'chat_peer_conversations',
     paranoid        : true,
     freezeTableName : true,
     })
-export default class Conversation extends Model {
+export default class PeerConversation extends Model {
 
     @IsUUID(4)
     @PrimaryKey
@@ -31,39 +34,39 @@ export default class Conversation extends Model {
     })
     Topic: string;
 
+    @IsUUID(4)
+    @ForeignKey(() => User)
     @Column({
-        type         : DataType.BOOLEAN,
-        allowNull    : false,
-        defaultValue : false,
-    })
-    IsGroupConversation : boolean;
-
-    @Column({
-        type         : DataType.BOOLEAN,
-        allowNull    : false,
-        defaultValue : false,
-    })
-    Marked : boolean;
-
-    @Column({
-        type : DataType.UUID,
-
+        type      : DataType.UUID,
         allowNull : false,
     })
-    InitiatingUserId: string;
+    InitiatingUserId : string;
 
+    @BelongsTo(() =>  User)
+    user:  User;
+
+    @IsUUID(4)
+    @ForeignKey(() => User)
     @Column({
-        type : DataType.UUID,
-
+        type      : DataType.UUID,
         allowNull : false,
     })
-    OtherUserId: string;
+    OtherUserId : string;
+
+    @BelongsTo(() =>  User)
+    otherUser:  User;
 
     @Column({
         type      : DataType.DATE,
         allowNull : true,
     })
     LastMessageTimestamp: Date;
+
+    @HasMany(() => ConversationParticipant)
+    Participants : ConversationParticipant[];
+
+    @HasMany(() => BlockedUser)
+    BlockConversations : BlockedUser[];
 
     @Column
     @CreatedAt

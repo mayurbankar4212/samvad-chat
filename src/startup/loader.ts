@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { ChatUserService } from '../services/chat.user.service';
 import { container, DependencyContainer } from 'tsyringe';
 import { Authenticator } from '../auth/authenticator';
 import { Logger } from '../common/logger';
@@ -41,22 +42,22 @@ export class Loader {
         return Loader._container;
     }
 
-    public static init = async (): Promise<boolean> => {
-        try {
+   public static init = async (): Promise<boolean> => {
+       try {
 
-            //Register injections here...
-            Injector.registerInjections(container);
+           //Register injections here...
+           Injector.registerInjections(container);
 
-            Loader._databaseConnector = container.resolve(DatabaseConnector);
-            Loader._authenticator = container.resolve(Authenticator);
-            Loader._seeder = container.resolve(Seeder);
-            
-            return true;
+           Loader._databaseConnector = container.resolve(DatabaseConnector);
+           Loader._authenticator = container.resolve(Authenticator);
+           Loader._seeder = container.resolve(Seeder);
+                        
+           return true;
 
-        } catch (error) {
-            Logger.instance().log(error.message);
-            return false;
-        }
-    };
+       } catch (error) {
+           Logger.instance().log(error.message);
+           return false;
+       }
+   };
 
 }

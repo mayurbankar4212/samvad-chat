@@ -16,6 +16,7 @@ import {
 } from 'sequelize-typescript';
 
 import { v4 } from 'uuid';
+import ChatMessage from '../chat/chat.message.model';
 import FileResourceReference from './file.resource.reference.model';
 import FileResourceVersion from './file.resource.version.model';
 
@@ -113,6 +114,9 @@ export default class FileResource extends Model {
 
     @HasMany(() => FileResourceVersion)
     Versions: FileResourceVersion[];
+
+    @HasMany(() => ChatMessage)
+    Messages : ChatMessage[];
 
     @Column
     @CreatedAt

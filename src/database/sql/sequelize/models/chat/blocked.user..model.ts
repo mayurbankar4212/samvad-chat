@@ -1,21 +1,12 @@
-import {
-    BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey,
+import { BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey,
     IsUUID, Model, PrimaryKey, Table, UpdatedAt
 } from 'sequelize-typescript';
 import { v4 } from 'uuid';
-import FileResource from '../file.resource/file.resource.model';
-import User from './chat.user';
-//import Conversation from './conversation.model';
+import User  from './chat.user';
 import GroupConversation from './group.conversation.model';
 import PeerConversation from './peer.conversation.model';
 
 ///////////////////////////////////////////////////////////////////////
-enum MessageType {
-    TEXT = "TEXT",
-    VOICE = "VOCIE",
-    VIDEO = "VIDEO",
-  }
-
 enum ConversationType {
     GROUP = "GROUP",
     PEER = "PEER",
@@ -23,12 +14,12 @@ enum ConversationType {
 
 @Table({
     timestamps      : true,
-    modelName       : 'ChatMessage',
-    tableName       : 'chat_messages',
+    modelName       : 'BlockedUser',
+    tableName       : 'chat_blocked_users',
     paranoid        : true,
     freezeTableName : true,
     })
-export default class ChatMessage extends Model {
+export default class BlockedUser extends Model {
 
     @IsUUID(4)
     @PrimaryKey
@@ -42,16 +33,33 @@ export default class ChatMessage extends Model {
     id: string;
 
     @IsUUID(4)
-    @ForeignKey(() => User)
+    @ForeignKey(()=>User)
     @Column({
         type      : DataType.UUID,
-        allowNull : false,
+        allowNull : true,
     })
-    SenderId : string;
+    UserId : string;
 
     @BelongsTo(() =>  User)
-    user:  User;
+    BlockUser:  User;
 
+    @IsUUID(4)
+    @ForeignKey(()=>User)
+    @Column({
+        type      : DataType.UUID,
+        allowNull : true,
+    })
+    BlockedById : string;
+
+    @BelongsTo(() =>  User)
+    AdminUser:  User;
+
+    @Column({
+        type :  DataType.ENUM(...Object.values(ConversationType)),
+        allowNull : false,
+    })
+    ConversationType: ConversationType;
+    
     @IsUUID(4)
     @ForeignKey(() => PeerConversation)
     @Column({
@@ -73,42 +81,6 @@ export default class ChatMessage extends Model {
 
     @BelongsTo(() =>  GroupConversation)
     OneToManyConversation:  GroupConversation;
-
-    @IsUUID(4)
-    @ForeignKey(() => FileResource)
-    @Column({
-        type      : DataType.UUID,
-        allowNull : true,
-    })
-    FileResourceId : string;
-
-    @BelongsTo(() =>  FileResource)
-    fileResource:  FileResource;
-
-    @Column({
-        type      : DataType.TEXT,
-        allowNull : false,
-    })
-    Message: string;
-
-    @Column({
-        type :  DataType.ENUM(...Object.values(MessageType)),
-        allowNull : false,
-    })
-    MessageType: MessageType;
-
-    @Column({
-        type :  DataType.ENUM(...Object.values(ConversationType)),
-        allowNull : false,
-    })
-    ConversationType: ConversationType;
-
-    @IsUUID(4)
-    @Column({
-        type         : DataType.UUID,
-        allowNull : true,
-    })
-    BaseMessageThreadId: string;
 
     @Column
     @CreatedAt
