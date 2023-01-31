@@ -1,22 +1,22 @@
 import { inject, injectable } from "tsyringe";
 // import { ApiError } from '../common/api.error';
 // import { ApiClientDomainModel, ApiClientVerificationDomainModel } from "../domain.types/api.client/api.client.domain.model";
-import { ChatUserDto } from "../domain.types/chat.user/chat.user.dto";
-import { IChatUserRepo } from "../database/repository.interfaces/chat.user.repo.interface";
+import { BannedUserDto } from "../domain.types/banned.user/banned.user.dto";
+import { IBannedUserRepo } from "../database/repository.interfaces/banned.user.repo.interface";
 // import { generate } from 'generate-password';
 // import { Helper } from "../common/helper";
 // import { CurrentClient } from "../domain.types/miscellaneous/current.client";
 // import * as apikeyGenerator from 'uuid-apikey';
 // import { ApiClientSearchFilters, ApiClientSearchResults } from "../domain.types/api.client/api.client.search.types";
-import { ChatUserDomainModel } from "../domain.types/chat.user/chat.user.domain.model";
+import { BannedUserDomainModel } from "../domain.types/banned.user/banned.user.domain.type";
 import { ChatUserRepo } from "../database/sql/sequelize/repositories/chat.user.repo ";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @injectable()
-export class ChatUserService {
+export class BannedUserService {
 
-    constructor(@inject('IChatUserRepo') private _chatUserRepo: IChatUserRepo) {}
+    constructor(@inject('IBannedUserRepo') private _bannedUserRepo: IBannedUserRepo) {}
     // constructor(private _chatUserRepo) {
     //     _chatUserRepo = new ChatUserRepo();
     // }
@@ -35,8 +35,8 @@ export class ChatUserService {
     //     return await this._clientRepo.create(clientDomainModel);
     // };
 
-    create = async (userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
-        return await this._chatUserRepo.create(userDomainModel);
+    create = async (bannedUserDomainModel: BannedUserDomainModel): Promise<BannedUserDto> => {
+        return await this._bannedUserRepo.create(bannedUserDomainModel);
     };
 
     // createInternalClients = async (clientDomainModel: ApiClientDomainModel): Promise<ApiClientDto> => {
@@ -47,8 +47,8 @@ export class ChatUserService {
     //     return await this._clientRepo.create(clientDomainModel);
     // };
 
-    getById = async (id: string): Promise<ChatUserDto> => {
-        return await this._chatUserRepo.getById(id);
+    getById = async (id: string): Promise<BannedUserDto> => {
+        return await this._bannedUserRepo.getById(id);
     };
 
     // getByClientCode = async (clientCode: string): Promise<ApiClientDto> => {
@@ -98,20 +98,20 @@ export class ChatUserService {
     //     return await this._clientRepo.isApiKeyValid(apiKey);
     // };
 
-    update = async (id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
-        return await this._chatUserRepo.update(id, userDomainModel);
-    };
+    // update = async (id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
+    //     return await this._chatUserRepo.update(id, userDomainModel);
+    // };
 
     // public search = async (filters: ApiClientSearchFilters): Promise<ApiClientSearchResults> => {
     //     return await this._clientRepo.search(filters);
     // };
 
     delete = async (id: string): Promise<boolean> => {
-        return await this._chatUserRepo.delete(id);
+        return await this._bannedUserRepo.delete(id);
     };
 
-    getAllUsers = async (): Promise<ChatUserDto[]> => {
-        return await this._chatUserRepo.getAllUsers();
+    getAllUsers = async (): Promise<BannedUserDto[]> => {
+        return await this._bannedUserRepo.getAllUsers();
     };
 
     // private getClientCode = async (clientName: string) => {

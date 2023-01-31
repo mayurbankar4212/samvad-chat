@@ -1,36 +1,36 @@
 import express from 'express';
 
-import { ChatUserService } from '../../services/chat.user.service';
+import { BannedUserService } from '../../services/banned.user.service';
 import { ResponseHandler } from '../../common/response.handler';
 import { Loader } from '../../startup/loader';
-import { ChatUserValidator } from './chat.user.validator';
+import { BannedUserValidator } from './banned.user.validator';
 import { ApiError } from '../../common/api.error';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class ChatUserController {
+export class BannedUserController {
 
     //#region member variables and constructors
 
-    _service: ChatUserService = null;
+    _service: BannedUserService = null;
 
     constructor() {
-        this._service = Loader.container.resolve(ChatUserService);
+        this._service = Loader.container.resolve(BannedUserService);
     }
 
     //#endregion
 
     create = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            request.context = 'User.Create';
+            request.context = 'User.Ban';
 
-            const userDomainModel = await ChatUserValidator.create(request);
+            const BannedUserDomainModel = await BannedUserValidator.create(request);
 
-            const user = await this._service.create(userDomainModel);
+            const user = await this._service.create(BannedUserDomainModel);
             if (user == null) {
-                throw new ApiError(400, 'Unable to create client.');
+                throw new ApiError(400, 'Unable to Ban user.');
             }
-            ResponseHandler.success(request, response, 'Api client added successfully!', 201, {
+            ResponseHandler.success(request, response, 'User Banned successfully!', 201, {
                 User : user,
             });
         } catch (error) {
@@ -38,23 +38,23 @@ export class ChatUserController {
         }
     };
 
-    getById = async (request: express.Request, response: express.Response): Promise<void> => {
-        try {
-            request.context = 'User.GetById';
+    // getById = async (request: express.Request, response: express.Response): Promise<void> => {
+    //     try {
+    //         request.context = 'User.GetById';
 
-            const id: string = await ChatUserValidator.getById(request);
+    //         const id: string = await ChatUserValidator.getById(request);
 
-            const user = await this._service.getById(id);
-            if (user == null) {
-                throw new ApiError(404, 'User not found.');
-            }
-            ResponseHandler.success(request, response, 'Chat user retrieved successfully!', 200, {
-                User : user,
-            });
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
+    //         const user = await this._service.getById(id);
+    //         if (user == null) {
+    //             throw new ApiError(404, 'User not found.');
+    //         }
+    //         ResponseHandler.success(request, response, 'Chat user retrieved successfully!', 200, {
+    //             User : user,
+    //         });
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
 
     getAllUsers = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
@@ -66,7 +66,7 @@ export class ChatUserController {
             if (user == null) {
                 throw new ApiError(404, 'User not found.');
             }
-            ResponseHandler.success(request, response, 'Chat user retrieved successfully!', 200, {
+            ResponseHandler.success(request, response, 'Banned user retrieved successfully!', 200, {
                 User : user,
             });
         } catch (error) {
@@ -94,31 +94,34 @@ export class ChatUserController {
     //     }
     // };
 
-    update = async (request: express.Request, response: express.Response): Promise<void> => {
-        try {
-            request.context = 'User.Update';
+    // update = async (request: express.Request, response: express.Response): Promise<void> => {
+    //     try {
+    //         request.context = 'User.Update';
 
-            const id: string = await ChatUserValidator.getById(request);
-            const domainModel = await ChatUserValidator.update(request);
-            const client = await this._service.update(id, domainModel);
-            if (client == null) {
-                throw new ApiError(404, 'Chat User not found.');
-            }
-            ResponseHandler.success(request, response, 'Chat User updated successfully!', 200, {
-                Client : client,
-            });
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
+    //         const id: string = await ChatUserValidator.getById(request);
+    //         const domainModel = await ChatUserValidator.update(request);
+    //         const client = await this._service.update(id, domainModel);
+    //         if (client == null) {
+    //             throw new ApiError(404, 'Chat User not found.');
+    //         }
+    //         ResponseHandler.success(request, response, 'Chat User updated successfully!', 200, {
+    //             Client : client,
+    //         });
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
 
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             request.context = 'User.Delete';
 
-            const id: string = await ChatUserValidator.getById(request);
-            await this._service.delete(id);
-            ResponseHandler.success(request, response, 'Chat User deleted successfully!', 200, null);
+            const id: string = await BannedUserValidator.getById(request);
+            const result = await this._service.delete(id);
+            if (result === false){
+                throw new ApiError(404, 'User not found.');
+            }
+            ResponseHandler.success(request, response, 'User Unbanned successfully!', 200, null);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

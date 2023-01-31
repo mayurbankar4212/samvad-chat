@@ -36,7 +36,7 @@ export default class GroupConversation extends Model {
 
     @Column({
         type      : DataType.STRING(256),
-        allowNull : true,
+        allowNull : false,
     })
     GroupName: string;
 

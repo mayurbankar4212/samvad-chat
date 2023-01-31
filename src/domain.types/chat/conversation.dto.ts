@@ -2,13 +2,14 @@ import { uuid } from "../miscellaneous/system.types";
 
 export interface ConversationDto {
     id?                  : uuid;
-    IsGroupConversation? : boolean;
+    //IsGroupConversation? : boolean;
     Topic?               : string;
-    Marked?              : boolean;
+   // Marked?              : boolean;
     InitiatingUserId?    : uuid;
-    InitiatingUser?      : any;
+    //InitiatingUser?      : any;
     OtherUserId?         : uuid;
-    OtherUser?           : any;
+    //OtherUser?           : any;
     Users?               : uuid[],
     LastMessageTimestamp?: Date;
 }
+

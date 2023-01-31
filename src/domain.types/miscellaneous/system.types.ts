@@ -76,6 +76,17 @@ export enum Severity {
     Unknown  = 'Unknown',
 }
 
+export enum GroupType {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE",
+    PASSWORD = "PASSWORD",
+  }
+
+export enum ConversationType {
+    GROUP = "GROUP",
+    PEER = "PEER",
+  }
+
 export const SeverityList: Severity[] = [
     Severity.Low,
     Severity.Medium,

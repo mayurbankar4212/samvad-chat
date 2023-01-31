@@ -1,4 +1,4 @@
-import { IChatUserRepo } from '../../../../../src/database/repository.interfaces/chat.user.repo.interface';
+import { IBannedUserRepo } from '../../../repository.interfaces/banned.user.repo.interface';
 import ApiClient from '../models/api.client/api.client.model';
 import { Op } from 'sequelize';
 import { ApiClientDomainModel } from '../../../../domain.types/api.client/api.client.domain.model';
@@ -11,26 +11,23 @@ import {
     ApiClientSearchFilters,
     ApiClientSearchResults,
 } from '../../../../domain.types/api.client/api.client.search.types';
-import { ChatUserDomainModel } from '../../../../../src/domain.types/chat.user/chat.user.domain.model';
+import { BannedUserDomainModel } from '../../../../../src/domain.types/banned.user/banned.user.domain.type';
 import User from '../models/chat/chat.user';
-import { UserMapper } from '../mappers/user.mapper';
-import { ChatUserDto } from '../../../../../src/domain.types/chat.user/chat.user.dto';
+import { BannedUserMapper } from '../mappers/banned.user.mapper';
+import { BannedUserDto } from '../../../../../src/domain.types/banned.user/banned.user.dto';
+import BannedUser from '../models/chat/banned.user.model';
 
 ///////////////////////////////////////////////////////////////////////
 
-export class ChatUserRepo implements IChatUserRepo {
+export class BannedUserRepo implements IBannedUserRepo {
 
-    create = async (userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
+    create = async (bannedUserDomainModel: BannedUserDomainModel): Promise<BannedUserDto> => {
         try {
             const entity = {
-                Name        : userDomainModel.Name,
-                Avatar      : userDomainModel.Avatar,
-                ProfileLink : userDomainModel.ProfileLink,
-                Phone       : userDomainModel.Phone,
-                Email       : userDomainModel.Email,
+                UserId : bannedUserDomainModel.UserId,
             };
-            const client = await User.create(entity);
-            const dto = await UserMapper.toDto(client);
+            const bannedUser = await BannedUser.create(entity);
+            const dto = await BannedUserMapper.toDto(bannedUser);
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -38,10 +35,10 @@ export class ChatUserRepo implements IChatUserRepo {
         }
     };
 
-    getById = async (id: string): Promise<ChatUserDto> => {
+    getById = async (id: string): Promise<BannedUserDto> => {
         try {
-            const user = await User.findByPk(id);
-            const dto = await UserMapper.toDto(user);
+            const user = await BannedUser.findByPk(id);
+            const dto = await BannedUserMapper.toDto(user);
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -198,57 +195,57 @@ export class ChatUserRepo implements IChatUserRepo {
     //     }
     // };
 
-update = async (id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
-    try {
-        const user = await User.findByPk(id);
+    // update = async (id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto> => {
+    //     try {
+    //         const user = await User.findByPk(id);
 
-        //Client code is not modifiable
-        //Use renew key to update ApiKey, ValidFrom and ValidTill
+    //         //Client code is not modifiable
+    //         //Use renew key to update ApiKey, ValidFrom and ValidTill
 
-        if (userDomainModel.Name != null) {
-            user.Name = userDomainModel.Name;
-        }
-        if (userDomainModel.Avatar != null) {
-            user.Avatar = userDomainModel.Avatar;
-        }
-        if (userDomainModel.Phone != null) {
-            user.Phone = userDomainModel.Phone;
-        }
-        if (userDomainModel.Email != null) {
-            user.Email = userDomainModel.Email;
-        }
-        if (userDomainModel.ProfileLink != null) {
-            user.ProfileLink = userDomainModel.ProfileLink;
-        }
-        await user.save();
+    //         if (userDomainModel.Name != null) {
+    //             user.Name = userDomainModel.Name;
+    //         }
+    //         if (userDomainModel.Avatar != null) {
+    //             user.Avatar = userDomainModel.Avatar;
+    //         }
+    //         if (userDomainModel.Phone != null) {
+    //             user.Phone = userDomainModel.Phone;
+    //         }
+    //         if (userDomainModel.Email != null) {
+    //             user.Email = userDomainModel.Email;
+    //         }
+    //         if (userDomainModel.ProfileLink != null) {
+    //             user.ProfileLink = userDomainModel.ProfileLink;
+    //         }
+    //         await user.save();
 
-        const dto = await UserMapper.toDto(user);
-        return dto;
-    } catch (error) {
-        Logger.instance().log(error.message);
-        throw new ApiError(500, error.message);
-    }
-};
+    //         const dto = await UserMapper.toDto(user);
+    //         return dto;
+    //     } catch (error) {
+    //         Logger.instance().log(error.message);
+    //         throw new ApiError(500, error.message);
+    //     }
+    // };
 
     delete = async (id: string): Promise<boolean> => {
         try {
-            const result = await User.destroy({ where: { id: id } });
-            return result === 1;
+            const result = await BannedUser.destroy({ where: { id: id } });
+            return result === 0 ? false : true;
         } catch (error) {
             Logger.instance().log(error.message);
             throw new ApiError(500, error.message);
         }
     };
 
-    getAllUsers = async (): Promise<ChatUserDto[]> => {
-        try {
-            const result = await User.findAll();
-            const dto = await UserMapper.toAllUserDto(result);
-            return dto;
-        } catch (error) {
-            Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
-        }
-    };
+        getAllUsers = async (): Promise<BannedUserDto[]> => {
+            try {
+                const result = await BannedUser.findAll();
+                const dto = await BannedUserMapper.toAllUserDto(result);
+                return dto;
+            } catch (error) {
+                Logger.instance().log(error.message);
+                throw new ApiError(500, error.message);
+            }
+        };
 
 }

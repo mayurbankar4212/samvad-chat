@@ -10,12 +10,23 @@ export class UserMapper {
         const dto: ChatUserDto = {
             id          : user.id,
             Name        : user.Name,
-            Avatar      : user.Avtar,
+            Avatar      : user.Avatar,
             ProfileLink : user.ProfileLink,
             Phone       : user.Phone,
             Email       : user.Email,
-           
         };
+        return dto;
+    };
+
+    static toAllUserDto = (user: User[]): ChatUserDto[] => {
+        var users = user;
+        if (user == null){
+            return null;
+        }
+        const dto: ChatUserDto[] = [];
+        for (const user of users){
+            dto.push(user);
+        }
         return dto;
     };
 

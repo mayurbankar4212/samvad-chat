@@ -34,6 +34,13 @@ export default class PeerConversation extends Model {
     })
     Topic: string;
 
+    // @Column({
+    //     type         : DataType.BOOLEAN,
+    //     allowNull    : false,
+    //     defaultValue : false,
+    // })
+    // Marked : boolean;
+
     @IsUUID(4)
     @ForeignKey(() => User)
     @Column({

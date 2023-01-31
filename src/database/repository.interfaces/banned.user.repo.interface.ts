@@ -1,13 +1,13 @@
-import { ChatUserDomainModel } from '../../domain.types/chat.user/chat.user.domain.model';
-import { ChatUserDto } from '../../domain.types/chat.user/chat.user.dto';
+import { BannedUserDomainModel } from '../../domain.types/banned.user/banned.user.domain.type';
+import { BannedUserDto } from '../../domain.types/banned.user/banned.user.dto';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-export interface IChatUserRepo {
+export interface IBannedUserRepo {
 
-    create(UserDomainModel: ChatUserDomainModel): Promise<ChatUserDto>;
+    create(UserDomainModel: BannedUserDomainModel): Promise<BannedUserDto>;
 
-    getById(id: string): Promise<ChatUserDto>;
+    getById(id: string): Promise<BannedUserDto>;
 
     // getByClientCode(clientCode: string): Promise<ApiClientDto>;
 
@@ -19,11 +19,12 @@ export interface IChatUserRepo {
 
     // isApiKeyValid(apiKey: string): Promise<CurrentClient>;
 
-    update(id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto>;
+    // update(id: string, userDomainModel: ChatUserDomainModel): Promise<ChatUserDto>;
 
     // search(filters: ApiClientSearchFilters): Promise<ApiClientSearchResults>;
 
     delete(id: string): Promise<boolean>;
-    getAllUsers(): Promise<ChatUserDto[]>
+
+    getAllUsers(): Promise<BannedUserDto[]>
 
 }

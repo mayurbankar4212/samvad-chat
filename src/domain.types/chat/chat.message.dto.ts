@@ -1,8 +1,17 @@
+import { DateTime } from "aws-sdk/clients/devicefarm";
 import { uuid } from "../miscellaneous/system.types";
 
 export interface ChatMessageDto {
     id?            : uuid;
-    ConversationId?: uuid;
     SenderId?      : uuid;
-    Message?       : uuid;
+    Message?       : string;
+    PeerConversationId?: uuid;
+    GroupConversationId?: uuid;
+    FileResourceId?: uuid;
+    MessageType?: string;
+    ConversationType?: string;
+    BaseMessageThreadId?: uuid;
+    CreatedAt?:Date,
+    UpdatedAt?: Date,
+    DeletedAt?: Date
 }

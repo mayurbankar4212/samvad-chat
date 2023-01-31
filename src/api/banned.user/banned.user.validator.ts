@@ -2,11 +2,11 @@ import express from 'express';
 import { body, validationResult, param, query } from 'express-validator';
 import { ApiClientSearchFilters } from '../../domain.types/api.client/api.client.search.types';
 import { Helper } from '../../common/helper';
-import { ChatUserDomainModel, ApiClientVerificationDomainModel } from '../../domain.types/chat.user/chat.user.domain.model';
+import { BannedUserDomainModel } from '../../domain.types/banned.user/banned.user.domain.type';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class ChatUserValidator {
+export class BannedUserValidator {
 
     // static getDomainModel = async (body: any): Promise<ApiClientDomainModel> => {
 
@@ -26,53 +26,30 @@ export class ChatUserValidator {
     //     return clientModel;
     // };
 
-    static getDomainModel = async (body: any): Promise<ChatUserDomainModel> => {
+    static getDomainModel = async (body: any): Promise<BannedUserDomainModel> => {
 
-        let UserModel: ChatUserDomainModel = null;
+        let bannedUserModel: BannedUserDomainModel = null;
 
-        UserModel = {
-            Name        : body.Name ?? null,
-            Avatar      : body.Avatar ?? null,
-            ProfileLink : body.ProfileLink ?? null,
-            Phone       : body.Phone ?? null,
-            Email       : body.Email ?? null,
+        bannedUserModel = {
+            UserId : body.UserId ?? null
         };
-        return UserModel;
+        return bannedUserModel;
     };
 
     static create = async (
         request: express.Request
-    ): Promise<ChatUserDomainModel> => {
-        await body('Name').exists()
+    ): Promise<BannedUserDomainModel> => {
+        await body('UserId').exists()
             .trim()
             .escape()
-            .isLength({ min: 3 })
-            .run(request);
-        await body('Avatar').optional()
-            .trim()
-            .escape()
-            .isURL()
-            .run(request);
-        await body('ProfileLink').optional()
-            .trim()
-            .escape()
-            .isURL()
-            .run(request);
-        await body('Email').optional()
-            .trim()
-            .escape()
-            .isEmail()
-            .run(request);
-        await body('Phone').optional()
-            .trim()
-            .escape()
-            .isNumeric()
+            .isUUID()
+            .isLength({ min: 32 })
             .run(request);
         const result = validationResult(request);
         if (!result.isEmpty()) {
             Helper.handleValidationError(result);
         }
-        return ChatUserValidator.getDomainModel(request.body);
+        return BannedUserValidator.getDomainModel(request.body);
     };
 
     // static search = async (
@@ -217,41 +194,41 @@ export class ChatUserValidator {
         return request.params.id;
     };
 
-    static update = async (
-        request: express.Request
-    ): Promise<ChatUserDomainModel> => {
-        await body('Name').optional()
-            .trim()
-            .escape()
-            .isLength({ min: 3 })
-            .run(request);
-        await body('Avatar').optional()
-            .trim()
-            .escape()
-            .isURL()
-            .run(request);
-        await body('ProfileLink').optional()
-            .trim()
-            .escape()
-            .isURL()
-            .run(request);
-        await body('Email').optional()
-            .trim()
-            .escape()
-            .isEmail()
-            .run(request);
-        await body('Phone').optional()
-            .trim()
-            .escape()
-            .isNumeric()
-            .isLength({ min: 10, max: 10 })
-            .run(request);
-        const result = validationResult(request);
-        if (!result.isEmpty()) {
-            Helper.handleValidationError(result);
-        }
-        return ChatUserValidator.getDomainModel(request.body);
-    };
+    // static update = async (
+    //     request: express.Request
+    // ): Promise<ChatUserDomainModel> => {
+    //     await body('Name').optional()
+    //         .trim()
+    //         .escape()
+    //         .isLength({ min: 3 })
+    //         .run(request);
+    //     await body('Avatar').optional()
+    //         .trim()
+    //         .escape()
+    //         .isURL()
+    //         .run(request);
+    //     await body('ProfileLink').optional()
+    //         .trim()
+    //         .escape()
+    //         .isURL()
+    //         .run(request);
+    //     await body('Email').optional()
+    //         .trim()
+    //         .escape()
+    //         .isEmail()
+    //         .run(request);
+    //     await body('Phone').optional()
+    //         .trim()
+    //         .escape()
+    //         .isNumeric()
+    //         .isLength({ min: 10, max: 10 })
+    //         .run(request);
+    //     const result = validationResult(request);
+    //     if (!result.isEmpty()) {
+    //         Helper.handleValidationError(result);
+    //     }
+    //     return ChatUserValidator.getDomainModel(request.body);
+    // };
 
     // private static getFilter(request): ApiClientSearchFilters {
 

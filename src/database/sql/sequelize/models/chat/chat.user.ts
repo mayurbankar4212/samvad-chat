@@ -40,7 +40,7 @@ export default class User extends Model {
         type: DataType.STRING(256),
         allowNull: true,
     })
-    Avtar:string;
+    Avatar:string;
 
     @Column({
             type: DataType.STRING(256),
