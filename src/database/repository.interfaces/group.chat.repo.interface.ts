@@ -1,4 +1,4 @@
-import { AddUsersToGroupDomainModel, GroupConversationDomainModel, PeerConversationDomainModel } from "../../domain.types/chat/conversation.domain.model";
+import { AddUsersToGroupDomainModel, ConversationParticipantDomainModel, GroupConversationDomainModel, PeerConversationDomainModel } from "../../domain.types/chat/conversation.domain.model";
 import { ConversationDto } from "../../domain.types/chat/conversation.dto";
 import { ChatMessageDomainModel } from "../../domain.types/chat/chat.message.domain.model";
 import { ChatMessageDto } from "../../domain.types/chat/chat.message.dto";
@@ -35,5 +35,10 @@ export interface IGroupChatRepo {
 
     getRecentConversationsForUser(userId: uuid): Promise<RecentConversationDto[]>;
 
-    makeGroupAdmin(conversationId:uuid, userId:uuid): Promise<boolean>;
+    makeGroupAdmin(model:ConversationParticipantDomainModel, conversationId:uuid): Promise<boolean>;
+
+    dismissAsAdmin(model:ConversationParticipantDomainModel, conversationId:uuid):Promise<boolean>;
+
+    removeUserFromGroupConversation(mode:ConversationParticipantDomainModel):Promise<GroupConversationDto>;
+
 }

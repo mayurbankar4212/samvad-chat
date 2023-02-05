@@ -241,23 +241,70 @@ export class GroupChatController extends BaseController {
 
             const adminId = await this._validator.getParamUuid(request,'adminId');
             const conversationId = await this._validator.getParamUuid(request,'conversationId');
-            const userId = await this._validator.getParamUuid(request,'userId');
-
+            //const userId = await this._validator.getParamUuid(request,'userId');
+            const domainModel = await this._validator.makeGroupAdmin(request);
             let isGroupAdmin : boolean = await this._service.isGroupAdmin(conversationId,adminId);
             if (isGroupAdmin === false) {
                 throw new ApiError(404,'You are not a group admin, only Admin can set group admin');
             }
-            isGroupAdmin = await this._service.isGroupAdmin(conversationId,userId);
+            isGroupAdmin = await this._service.isGroupAdmin(conversationId,domainModel.UserId);
             if (isGroupAdmin === true) {
                 throw new ApiError(404,'You are already group admin');
             }
-            const updateAdmin = await this._service.makeGroupAdmin(conversationId,userId);
+            const updateAdmin = await this._service.makeGroupAdmin(domainModel,conversationId);
             if (updateAdmin === false) {
                 throw new ApiError(404,'Error creating group admin');
             }
             ResponseHandler.success(request,response,'Set Admin successfully',200,{
                 UpdaedAdmin : updateAdmin
             });
+        }
+        catch (error) {
+            ResponseHandler.handleError(request,response,error);
+        }
+    }
+
+    dismissAsAdmin = async (request:express.Request, response:express.Response):Promise<void> =>{
+        try {
+            await this.setContext('Chat.DismissAsAdmin',request);
+
+            const adminId = await this._validator.getParamUuid(request,'adminId');
+            const conversationId = await this._validator.getParamUuid(request,'conversationId');
+            //const userId = await this._validator.getParamUuid(request,'userId');
+            const domainModel = await this._validator.dismissAsAdmin(request);
+            let isGroupAdmin : boolean = await this._service.isGroupAdmin(conversationId,adminId);
+            if (isGroupAdmin === false) {
+                throw new ApiError(404,'You are not a group admin, only Admin can dismiss other admin');
+            }
+            isGroupAdmin = await this._service.isGroupAdmin(conversationId,domainModel.UserId);
+            if (isGroupAdmin === false) {
+                throw new ApiError(404,'You are not a group admin');
+            }
+            const updateAdmin = await this._service.dismissAsAdmin(domainModel,conversationId);
+            if (updateAdmin === true) {
+                throw new ApiError(404,'Error in dismissing group admin');
+            }
+            ResponseHandler.success(request,response,'Dismiss Admin successfully',200,{
+                UpdaedAdmin : updateAdmin
+            });
+        }
+        catch (error) {
+            ResponseHandler.handleError(request,response,error);
+        }
+    }
+
+    removeUserFromGroupConversation = async (request:express.Request, response:express.Response):Promise<void> => {
+        try {
+            await this.setContext('Chat.RemoveUserFromGroupConversation',request);
+
+            const adminId = await this._validator.getParamUuid(request, 'userId');
+            const domainModel = await this._validator.removeUserFromGroupConversation(request);
+
+            const isGroupAdmin = await this._service.isGroupAdmin(domainModel.GroupConversationId,adminId);
+            if (isGroupAdmin === false) {
+                throw new ApiError(404,'Only group admin is allowed to remove users from groups');
+            }
+            const conversation = await this._service.removeUserFromGroupConversation(domainModel);
         }
         catch (error) {
             ResponseHandler.handleError(request,response,error);

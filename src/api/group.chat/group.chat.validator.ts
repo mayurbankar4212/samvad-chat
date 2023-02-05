@@ -1,5 +1,5 @@
 import express from 'express';
-import { GroupConversationDomainModel, AddUsersToGroupDomainModel } from '../../domain.types/chat/conversation.domain.model';
+import { GroupConversationDomainModel, AddUsersToGroupDomainModel, ConversationParticipantDomainModel } from '../../domain.types/chat/conversation.domain.model';
 import { ChatMessageDomainModel } from '../../domain.types/chat/chat.message.domain.model';
 import { BaseValidator, Where } from '../base.validator';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
@@ -57,6 +57,22 @@ export class GroupChatValidator extends BaseValidator {
         await this.validateRequest(request);
     }
 
+    validateMakeGroupAdminCreateBody=async (request)=>{
+        await this.validateUuid(request,'UserId',Where.Body,true,false);
+        await this.validateRequest(request);
+    }
+
+    validateDismissAsAdminCreateBody=async (request)=>{
+        await this.validateUuid(request,'UserId',Where.Body,true,false);
+        await this.validateRequest(request);
+    }
+
+    validateRemoveUserFromGroupConversationCreateBody=async (request)=>{
+        await this.validateUuid(request,'UserId',Where.Body,true,false);
+        await this.validateUuid(request,'GroupConversationId',Where.Body,true,false);
+        await this.validateRequest(request);
+    }
+
     private getCreateConversationDomainModel(requestBody:any):GroupConversationDomainModel{
         const createModel : GroupConversationDomainModel = {
             GroupName            : requestBody.GroupName,
@@ -94,6 +110,20 @@ export class GroupChatValidator extends BaseValidator {
         return model;
     }
 
+    getMakeGroupAdminDomainModel= async (requestBody):Promise<ConversationParticipantDomainModel>=>{
+        const model : ConversationParticipantDomainModel = {
+            UserId : requestBody.UserId
+        };
+        return model;
+    };
+
+    getDismissAsAdminDomainModel= async (requestBody):Promise<ConversationParticipantDomainModel>=>{
+        const model : ConversationParticipantDomainModel = {
+            UserId : requestBody.UserId
+        };
+        return model;
+    };
+
     getAddUsersToGroupDomainModel = async (requestBody:any):Promise<AddUsersToGroupDomainModel>=>{
         const model : AddUsersToGroupDomainModel = {
             ListOfUsers : JSON.stringify(requestBody.ListOfUsers),
@@ -105,6 +135,14 @@ export class GroupChatValidator extends BaseValidator {
     getUpdateGroupMessageDomainModel = async (requestBody:any):Promise<ChatMessageDomainModel>=>{
         const model : ChatMessageDomainModel = {
             Message : requestBody.Message,
+        };
+        return model;
+    }
+
+    getRemoveUserFromGroupConversationDomainModel=async (requestBody:any):Promise<ConversationParticipantDomainModel>=>{
+        const model : ConversationParticipantDomainModel = {
+            GroupConversationId : requestBody.GroupConversationId,
+            UserId              : requestBody.UserId
         };
         return model;
     }
@@ -132,6 +170,21 @@ export class GroupChatValidator extends BaseValidator {
     UpdateGroupMessage =async(request:express.Request):Promise<ChatMessageDomainModel>=>{
         await this.validateUpdateGroupMessageCreateBody(request);
         return this.getUpdateGroupMessageDomainModel(request.body);
+    }
+
+    makeGroupAdmin = async (request:express.Request):Promise<ConversationParticipantDomainModel>=>{
+        await this.validateMakeGroupAdminCreateBody(request);
+        return this.getMakeGroupAdminDomainModel(request.body);
+    }
+
+    dismissAsAdmin = async (request:express.Request):Promise<ConversationParticipantDomainModel>=>{
+        await this.validateDismissAsAdminCreateBody(request);
+        return this.getDismissAsAdminDomainModel(request.body);
+    }
+
+    removeUserFromGroupConversation =async (request:express.Request):Promise<ConversationParticipantDomainModel>=>{
+        await this.validateRemoveUserFromGroupConversationCreateBody(request);
+        return this.getRemoveUserFromGroupConversationDomainModel(request.body);
     }
 
 }

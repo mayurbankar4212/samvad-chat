@@ -1,7 +1,7 @@
 import { json, Model, Op } from 'sequelize';
 import { ChatMessageDomainModel } from '../../../../domain.types/chat/chat.message.domain.model';
 import { ChatMessageDto } from '../../../../domain.types/chat/chat.message.dto';
-import { AddUsersToGroupDomainModel, GroupConversationDomainModel } from '../../../../domain.types/chat/conversation.domain.model';
+import { AddUsersToGroupDomainModel, ConversationParticipantDomainModel, GroupConversationDomainModel } from '../../../../domain.types/chat/conversation.domain.model';
 import { GroupConversationDto, RecentConversationDto } from '../../../../domain.types/chat/group.conversation.dto';
 import { ConversationSearchFilters, ConversationSearchResults } from '../../../../domain.types/chat/conversation.search.types';
 import { ApiError } from '../../../../common/api.error';
@@ -327,12 +327,13 @@ export class GroupChatRepo implements IGroupChatRepo {
         });
     }
 
-    makeGroupAdmin= async (conversationId: string, userId: string): Promise<boolean> => {
+    makeGroupAdmin= async (domainModel:ConversationParticipantDomainModel, conversationId: string):
+    Promise<boolean> => {
         try {
             const partcipant = await ConversationParticipant.findOne({
                 where : {
                     GroupConversationId : conversationId,
-                    UserId              : userId
+                    UserId              : domainModel.UserId
                 }
             });
             partcipant.IsAdmin = true;
@@ -340,6 +341,54 @@ export class GroupChatRepo implements IGroupChatRepo {
             return partcipant.IsAdmin;
         }
         catch (error) {
+            Logger.instance().log(error.message);
+            throw new ApiError(500,error.message);
+        }
+    }
+
+    dismissAsAdmin =async (domainModel:ConversationParticipantDomainModel, conversationId:uuid):Promise<boolean>=>{
+        try {
+            const partcipant = await ConversationParticipant.findOne({
+                where : {
+                    GroupConversationId : conversationId,
+                    UserId              : domainModel.UserId
+                }
+            });
+            partcipant.IsAdmin = false;
+            partcipant.save();
+            return partcipant.IsAdmin;
+        }
+        catch (error) {
+            Logger.instance().log(error.message);
+            throw new ApiError(500,error.message);
+        }
+    }
+
+    removeUserFromGroupConversation= async (model:ConversationParticipantDomainModel):
+    Promise<GroupConversationDto>=>{
+        try {
+            await ConversationParticipant.destroy({
+                where : {
+                    userId : model.UserId
+                }
+            });
+            const conversation = await GroupConversation.findOne({
+                where : {
+                    id : model.GroupConversationId,
+                }
+            });
+
+            const existingUserIds: string[] = JSON.parse(conversation.ListOfUsers);
+            const index = existingUserIds.indexOf(model.UserId);
+            if (index === -1  && conversation.InitiatingUserId !== model.UserId){
+                throw new ApiError(202,'User not found');
+            }
+            if (index !== -1)
+                conversation.ListOfUsers = JSON.stringify(existingUserIds.splice(index,1));
+            conversation.save();
+            return ChatMapper.toGroupConversationDto(conversation);
+        }
+        catch (error){
             Logger.instance().log(error.message);
             throw new ApiError(500,error.message);
         }

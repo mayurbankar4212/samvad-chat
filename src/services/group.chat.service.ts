@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { IGroupChatRepo } from '../database/repository.interfaces/group.chat.repo.interface';
 import {
     AddUsersToGroupDomainModel,
+    ConversationParticipantDomainModel,
     GroupConversationDomainModel,
     PeerConversationDomainModel,
 } from '../domain.types/chat/conversation.domain.model';
@@ -74,7 +75,17 @@ export class GroupChatService {
         return await this._chatRepo.getRecentConversationsForUser(userId);
     }
 
-    makeGroupAdmin = async (conversationId:uuid,userId:uuid): Promise<boolean> => {
-        return await this._chatRepo.makeGroupAdmin(conversationId,userId);
+    makeGroupAdmin = async (domainModel:ConversationParticipantDomainModel,conversationId:uuid): Promise<boolean> => {
+        return await this._chatRepo.makeGroupAdmin(domainModel,conversationId);
     }
+
+    dismissAsAdmin = async (domainModel:ConversationParticipantDomainModel,conversationId:uuid): Promise<boolean> => {
+        return await this._chatRepo.dismissAsAdmin(domainModel,conversationId);
+    }
+
+    removeUserFromGroupConversation= async(domainModel:ConversationParticipantDomainModel):
+    Promise<GroupConversationDomainModel>=>{
+        return await this._chatRepo.removeUserFromGroupConversation(domainModel);
+    }
+    
 }

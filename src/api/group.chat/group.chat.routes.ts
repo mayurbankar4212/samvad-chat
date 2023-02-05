@@ -22,7 +22,9 @@ export const register = (app: express.Application): void => {
     router.put('/group/messages/:messageId', controller.updateGroupMessage);
     router.delete('/group/messages/:messageId', controller.deteteGroupMessage);
     router.get('/group/users/:userId/conversations/recent', controller.getRecentConversationsForUser);
-    router.put('/group/setting/:adminId/:conversationId/:userId', controller.makeGroupAdmin);
-
+    router.put('/group/admin/:adminId/:conversationId/:userId', controller.makeGroupAdmin);
+    router.put('/group/dismiss/:adminId/:conversationId/:userId', controller.dismissAsAdmin);
+    router.put('/group/removeuser/:adminId',controller.removeUserFromGroupConversation);
+    
     app.use('/api/v1/chats', router);
 };
