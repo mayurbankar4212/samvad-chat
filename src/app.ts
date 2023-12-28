@@ -7,6 +7,7 @@ import { Router } from './api/router';
 import { Logger } from './common/logger';
 import { ConfigurationManager } from "./config/configuration.manager";
 import { Loader } from './startup/loader';
+import   socketHandler  from './sockets/socket.handler';
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +21,7 @@ export default class Application {
 
     private constructor() {
         this._app = express();
+        this._server = http.createServer(this._app);
         this._router = new Router(this._app);
     }
 
@@ -39,6 +41,9 @@ export default class Application {
 
             //Load the modules
             await Loader.init();
+
+            //Setup Socket.io
+            socketHandler(this._server);
 
             if (process.env.NODE_ENV === 'test') {
                 await Loader.databaseConnector.dropDatabase();
